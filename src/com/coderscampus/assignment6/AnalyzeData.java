@@ -19,20 +19,10 @@ public class AnalyzeData {
 		// Get sales to store into a list and stream through it
 		// Create 3 different List for 3 different year
 		List<Car> car = modelName.getSales();
-		List<Car> sales17 = car.stream()
-
-				.filter(item -> item.getDate().getYear() < 2018)
-				.collect(Collectors.toList());
 		
-		List<Car> sales18 = car.stream()
-
-				.filter(item -> item.getDate().getYear() < 2019)
-				.collect(Collectors.toList());
-		
-		List<Car> sales19 = car.stream()
-
-				.filter(item -> item.getDate().getYear() < 2020)
-				.collect(Collectors.toList());
+		List<Car> sales17 = getYearOfTheSales(car, 2017);
+		List<Car> sales18 = getYearOfTheSales(car, 2018);
+		List<Car> sales19 = getYearOfTheSales(car, 2019);
 		// Total sales of Tesla model3 in 2017
 		Integer totalSales17 = sales17.stream()
 								 .collect(Collectors.summingInt(i -> i.getNumberOfSales()));
@@ -62,11 +52,22 @@ public class AnalyzeData {
 		
 		return car;
 	}
+	
+	
 	public static void printHello(String model, Integer totalSales17, Integer totalSales18, Integer totalSales19, String bestMonth, String worstMonth ) {
 		System.out.println(model + " Yearly Sales Report");
 		System.out.println("2017 -> " + "$"+totalSales17 + "\n"
 				+ "2018 -> " +"$"+ totalSales18 + "\n2019 -> " + "$"+totalSales19);
 		System.out.println("The best month for Model S was: " + bestMonth
 				+ "\nThe worst month for Model S was: " + worstMonth +"\n");
+	}
+	
+	public static List<Car> getYearOfTheSales(List<Car> car, int year) {
+		List<Car> list = car.stream()
+
+				.filter(item -> item.getDate().getYear() < (year+1))
+				.collect(Collectors.toList());
+		
+		return list;
 	}
 }

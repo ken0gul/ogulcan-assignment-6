@@ -1,7 +1,6 @@
 package com.coderscampus.assignment6;
 
 import java.io.FileNotFoundException;
-import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
@@ -65,8 +64,8 @@ public class AnalyzeData {
 	}
 	public static void printHello(String model, Integer totalSales17, Integer totalSales18, Integer totalSales19, String bestMonth, String worstMonth ) {
 		System.out.println(model + " Yearly Sales Report");
-		System.out.println("2017 -> " + totalSales17 + "\n"
-				+ "2018 -> " + totalSales18 + "\n2019 -> " + totalSales19);
+		System.out.println("2017 -> " + "$"+totalSales17 + "\n"
+				+ "2018 -> " +"$"+ totalSales18 + "\n2019 -> " + "$"+totalSales19);
 		System.out.println("The best month for Model S was: " + bestMonth
 				+ "\nThe worst month for Model S was: " + worstMonth +"\n");
 	}

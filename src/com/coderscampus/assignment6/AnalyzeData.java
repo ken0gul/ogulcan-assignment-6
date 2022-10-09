@@ -1,15 +1,19 @@
 package com.coderscampus.assignment6;
 
 import java.io.FileNotFoundException;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AnalyzeData {
 
 	
-	public static List<Car> analyze(String model,String fileName) throws FileNotFoundException {
+	public static void analyze(String model,String fileName) throws FileNotFoundException {
 		
 		// Read the file
 		ReadFilesService modelName = new ReadFilesService(fileName);
@@ -18,59 +22,66 @@ public class AnalyzeData {
 		
 		// Get sales to store into a list and stream through it
 		// Create 3 different List for 3 different year
-		List<Car> car = modelName.getSales();
+//		List<Car> car = modelName.getSales();
+//		
+//		List<Car> sales16 = getYearOfTheSales(car, 2016);
+//		List<Car> sales17 = getYearOfTheSales(car, 2017);
+//		List<Car> sales18 = getYearOfTheSales(car, 2018);
+//		List<Car> sales19 = getYearOfTheSales(car, 2019);
 		
-		List<Car> sales16 = getYearOfTheSales(car, 2016);
-		List<Car> sales17 = getYearOfTheSales(car, 2017);
-		List<Car> sales18 = getYearOfTheSales(car, 2018);
-		List<Car> sales19 = getYearOfTheSales(car, 2019);
-
-		Integer totalSales16 = sales16.stream()
-									
-									  .collect(Collectors.summingInt(i -> i.getNumberOfSales()));
 		
-		Integer totalSales17 = sales17.stream()
-								 .collect(Collectors.summingInt(i -> i.getNumberOfSales()));
+	
 		
-		Integer totalSales18 = sales18.stream()
-				 .collect(Collectors.summingInt(i -> i.getNumberOfSales()));
-		
-		Integer totalSales19 = sales19.stream()
-				 .collect(Collectors.summingInt(i -> i.getNumberOfSales()));
-		
-		// Best and Worst Months
-		String bestMonth=	car.stream()
-				   .max(Comparator.comparing(Car::getNumberOfSales))
-				   .map(item -> item.getDate())
-				   .get().format(DateTimeFormatter.ofPattern("MMMM-yyyy"));
-		
-		String worstMonth=	car.stream()
-				   .min(Comparator.comparing(Car::getNumberOfSales))
-				   .map(item -> item.getDate())
-				   .get().format(DateTimeFormatter.ofPattern("MMMM-yyyy"));
 		// Print it out
 		
-		printHello(model, totalSales16,totalSales17, totalSales18, totalSales19, bestMonth, worstMonth);
+		
+		printHello(model, modelName);
 		
 		
-		return car;
 	}
 	
 	
-	public static void printHello(String model, Integer totalSales16,Integer totalSales17, Integer totalSales18, Integer totalSales19, String bestMonth, String worstMonth ) {
-		System.out.println(model + " Yearly Sales Report");
-		System.out.println("2016 -> $" + totalSales16 +"\n2017 -> " + "$"+totalSales17 + "\n"
-				+ "2018 -> " +"$"+ totalSales18 + "\n2019 -> " + "$"+totalSales19);
-		System.out.println("The best month for Model S was: " + bestMonth
-				+ "\nThe worst month for Model S was: " + worstMonth +"\n");
-	}
 	
-	public static List<Car> getYearOfTheSales(List<Car> car, int year) {
-		List<Car> list = car.stream()
+	
+	
+	public static void printHello(String model,  ReadFilesService modelName ) {
+		System.out.println("\n"+model + " Yearly Sales Report\n");
+		List<Car> cars =  modelName.getSales();
+		
+		
 
-				.filter(item -> item.getDate().getYear() < (year+1))
-				.collect(Collectors.toList());
+		Map<Integer, Integer> m =cars.stream()
+			.filter(item -> item.getYear() != null)
+			.distinct()
+			.collect(Collectors.groupingBy(Car::getYear, Collectors.summingInt(Car::getNumberOfSales)));
+	
+			
+		 m.entrySet().stream()
+					 .forEach(item -> System.out.println(item.getKey() + " -> " + item.getValue()));
+
+			String bestMonth=	cars.stream()
+					   .max(Comparator.comparing(Car::getNumberOfSales))
+					   .map(item -> item.getDate())
+					   .get().format(DateTimeFormatter.ofPattern("MMMM-yyyy"));
+			
+			String worstMonth=	cars.stream()
+					   .min(Comparator.comparing(Car::getNumberOfSales))
+					   .map(item -> item.getDate())
+					   .get().format(DateTimeFormatter.ofPattern("MMMM-yyyy"));
+			
+			System.out.println("\nThe best month for " + model + " was: " + bestMonth);
+			System.out.println("The worst month for " + model + " was: " + worstMonth);
 		
-		return list;
+		
 	}
+	
+//	public static List<Car> getYearOfTheSales(List<Car> car, Integer year) {
+//		
+//		List<Car> list = car.stream()
+//
+//				.filter(item -> item.getDate().getYear() < (year+1))
+//				.collect(Collectors.toList());
+//		
+//		return list;
+//	}
 }

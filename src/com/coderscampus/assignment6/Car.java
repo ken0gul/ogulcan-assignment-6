@@ -1,5 +1,6 @@
 package com.coderscampus.assignment6;
 
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -21,7 +22,10 @@ public class Car implements Comparator<Car> {
 	public YearMonth getDate() {
 		return date;
 	}
-
+	
+	public Integer getYear() {
+		return date.getYear();
+	}
 	public Integer getNumberOfSales() {
 		return numberOfSales;
 	}

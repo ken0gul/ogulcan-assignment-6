@@ -35,7 +35,7 @@ public class AnalyzeData {
 		// Print it out
 		
 		
-		printHello(model, modelName);
+		print(model, modelName);
 		
 		
 	}
@@ -44,7 +44,7 @@ public class AnalyzeData {
 	
 	
 	
-	public static void printHello(String model,  ReadFilesService modelName ) {
+	public static void print(String model,  ReadFilesService modelName ) {
 		System.out.println("\n"+model + " Yearly Sales Report\n");
 		List<Car> cars =  modelName.getSales();
 		
